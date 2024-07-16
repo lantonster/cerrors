@@ -8,7 +8,7 @@ import (
 )
 
 // New 使用格式化说明创建一个错误。
-func New(format string, args ...interface{}) error {
+func New(format string, args ...any) error {
 	return &withCode{
 		stack:   callers(),
 		message: fmt.Sprintf(format, args...),
@@ -16,7 +16,7 @@ func New(format string, args ...interface{}) error {
 }
 
 // WithCode 创建一个拥有错误码和注释的错误。
-func WithCode(code int, format string, args ...interface{}) error {
+func WithCode(code int, format string, args ...any) error {
 	return &withCode{
 		code:    code,
 		stack:   callers(),
@@ -25,12 +25,12 @@ func WithCode(code int, format string, args ...interface{}) error {
 }
 
 // Wrap 使用格式化说明对错误进行包装，如果有错误码则沿用。
-func Wrap(err error, format string, args ...interface{}) error {
+func Wrap(err error, format string, args ...any) error {
 	return WrapC(err, Code(err), format, args...)
 }
 
 // Wrap 使用错误码和格式化说明对错误进行包装，如果原错误有错误码则覆盖。
-func WrapC(err error, code int, format string, args ...interface{}) error {
+func WrapC(err error, code int, format string, args ...any) error {
 	if err == nil {
 		return nil
 	}
