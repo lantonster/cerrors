@@ -3,6 +3,7 @@ package cerrors
 import (
 	"fmt"
 	"io"
+	"net/http"
 
 	"google.golang.org/grpc/status"
 )
@@ -57,7 +58,8 @@ func Code(err error) int {
 		return int(e.Code())
 	}
 
-	return 0
+	// 如果本身不携带错误码，则返回 500
+	return http.StatusInternalServerError
 }
 
 // withCode 携带有错误码和注释的错误类型。
